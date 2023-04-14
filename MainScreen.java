@@ -1,3 +1,18 @@
+
+import Frames.Monster;
+import Frames.NotesScreen;
+import Frames.NPCScreen;
+import Frames.MonsterScreen;
+import Frames.CombatScreen;
+import com.google.gson.Gson;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -7,14 +22,37 @@
  *
  * @author straf
  */
-public class MainScreen extends javax.swing.JFrame {
+public class MainScreen extends javax.swing.JFrame{
 
-    /**
+        /**
      * Creates new form MainScreen
      */
-    public MainScreen() {
-        initComponents();
+    
+    private static final long serialVersionUID = 1L;
+    private DefaultListModel<String> listModel;
+    public MonsterScreen MonsterScreen;
+    public NotesScreen NotesScreen;
+    public NPCScreen npcScreen;
+    public CombatScreen combatScreen;
+    
+    
+    
+    public MainScreen() throws FileNotFoundException {
+        listModel = new DefaultListModel<>();
+        new JList<>(listModel);
+        
+        Gson gson = new Gson();
+        Monster[] monsters = gson.fromJson(new FileReader("src\\main\\Java\\InternalData\\monsters.json"), Monster[].class);
+        System.out.println("Done!");
+
+            // Populate the list model with the names of the monsters
+        for (Monster monster : monsters) {
+            listModel.addElement(monster.getName());
+        }
+         initComponents();
     }
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -25,10 +63,235 @@ public class MainScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Main = new javax.swing.JPanel();
+        desktopPane = new javax.swing.JDesktopPane();
+        notesToggle = new javax.swing.JToggleButton();
+        monsterToggle = new javax.swing.JToggleButton();
+        npcToggle = new javax.swing.JToggleButton();
+        combatToggle = new javax.swing.JToggleButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        Main.setBackground(new java.awt.Color(255, 204, 204));
+
+        javax.swing.GroupLayout desktopPaneLayout = new javax.swing.GroupLayout(desktopPane);
+        desktopPane.setLayout(desktopPaneLayout);
+        desktopPaneLayout.setHorizontalGroup(
+            desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1933, Short.MAX_VALUE)
+        );
+        desktopPaneLayout.setVerticalGroup(
+            desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 998, Short.MAX_VALUE)
+        );
+
+        notesToggle.setText("Notes");
+        notesToggle.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                notesToggleItemStateChanged(evt);
+            }
+        });
+        notesToggle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                notesToggleMouseClicked(evt);
+            }
+        });
+        notesToggle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notesToggleActionPerformed(evt);
+            }
+        });
+
+        monsterToggle.setText("Monsters");
+        monsterToggle.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                monsterToggleItemStateChanged(evt);
+            }
+        });
+        monsterToggle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monsterToggleActionPerformed(evt);
+            }
+        });
+
+        npcToggle.setText("NPC");
+        npcToggle.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                npcToggleItemStateChanged(evt);
+            }
+        });
+        npcToggle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                npcToggleActionPerformed(evt);
+            }
+        });
+
+        combatToggle.setText("Combat");
+        combatToggle.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                combatToggleItemStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout MainLayout = new javax.swing.GroupLayout(Main);
+        Main.setLayout(MainLayout);
+        MainLayout.setHorizontalGroup(
+            MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainLayout.createSequentialGroup()
+                .addGroup(MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MainLayout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addGroup(MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(notesToggle)
+                            .addComponent(monsterToggle))
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(MainLayout.createSequentialGroup()
+                                .addComponent(combatToggle, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainLayout.createSequentialGroup()
+                                .addComponent(npcToggle, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(25, 25, 25)))))
+                .addComponent(desktopPane)
+                .addGap(42, 42, 42))
+        );
+        MainLayout.setVerticalGroup(
+            MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MainLayout.createSequentialGroup()
+                .addGroup(MainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MainLayout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(notesToggle)
+                        .addGap(29, 29, 29)
+                        .addComponent(monsterToggle)
+                        .addGap(26, 26, 26)
+                        .addComponent(npcToggle)
+                        .addGap(28, 28, 28)
+                        .addComponent(combatToggle)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(MainLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(desktopPane)))
+                .addGap(44, 44, 44))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(119, 119, 119)
+                .addComponent(Main, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(371, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(63, 63, 63)
+                .addComponent(Main, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(609, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void notesToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notesToggleActionPerformed
+ 
+    }//GEN-LAST:event_notesToggleActionPerformed
+
+    private void monsterToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monsterToggleActionPerformed
+        // TODO add your handling code here:
+    
+    }//GEN-LAST:event_monsterToggleActionPerformed
+
+    private void notesToggleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_notesToggleMouseClicked
+   
+    }//GEN-LAST:event_notesToggleMouseClicked
+
+    private void monsterToggleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monsterToggleItemStateChanged
+        if (MonsterScreen == null) {
+            try {
+                MonsterScreen = new MonsterScreen(); 
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (monsterToggle.isSelected()) {
+            desktopPane.add(MonsterScreen);
+            MonsterScreen.setVisible(true);
+            desktopPane.repaint();
+
+        } else {
+            desktopPane.remove(MonsterScreen);
+            MonsterScreen.setVisible(false);
+            desktopPane.repaint();
+        }
+        
+        
+    }//GEN-LAST:event_monsterToggleItemStateChanged
+
+    private void notesToggleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_notesToggleItemStateChanged
+    
+        
+        if (NotesScreen == null) {
+            NotesScreen = new NotesScreen();
+        }
+
+        if (notesToggle.isSelected()) {
+            desktopPane.add(NotesScreen);
+            NotesScreen.setVisible(true);
+            desktopPane.repaint();
+
+        } else {
+            desktopPane.remove(NotesScreen);
+            NotesScreen.setVisible(false);
+            desktopPane.repaint();
+        }
+    }//GEN-LAST:event_notesToggleItemStateChanged
+
+    private void npcToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_npcToggleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_npcToggleActionPerformed
+
+    private void npcToggleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_npcToggleItemStateChanged
+        
+        if (npcScreen == null) {
+            npcScreen = new NPCScreen();
+        }
+        if (npcToggle.isSelected()) {
+            desktopPane.add(npcScreen);
+            npcScreen.setVisible(true);
+            desktopPane.repaint();
+        } 
+        else {
+            desktopPane.remove(npcScreen);
+            npcScreen.setVisible(false);
+            desktopPane.repaint();
+        }
+    }//GEN-LAST:event_npcToggleItemStateChanged
+
+    private void combatToggleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combatToggleItemStateChanged
+        if (combatScreen == null) {
+            try {
+                combatScreen = new CombatScreen();
+            } catch (IOException ex) {
+                Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (combatToggle.isSelected()) {
+            desktopPane.add(combatScreen);
+            combatScreen.setVisible(true);
+            desktopPane.repaint();
+        } 
+        else {
+            desktopPane.remove(combatScreen);
+            combatScreen.setVisible(false);
+            desktopPane.repaint();
+        }    
+    }//GEN-LAST:event_combatToggleItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -60,11 +323,29 @@ public class MainScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainScreen().setVisible(true);
+                try {
+                    new MainScreen().setVisible(true);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(MainScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Main;
+    private javax.swing.JToggleButton combatToggle;
+    private javax.swing.JDesktopPane desktopPane;
+    private javax.swing.JToggleButton monsterToggle;
+    private javax.swing.JToggleButton notesToggle;
+    private javax.swing.JToggleButton npcToggle;
     // End of variables declaration//GEN-END:variables
 }
+  
+
+        
+    
+
+    
