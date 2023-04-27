@@ -1,0 +1,23 @@
+Name: Ishte Torzalan
+Gender: Female
+Race: Tiefling
+
+Physical Traits:
+- glossy teeth
+- a strong body
+
+Mannerisms:
+- Always looking over your shoulder
+- Shifts weight from foot to foot
+
+Demeanor: Observant
+
+Ideal: Greed
+
+Bond: I must always be on guard
+
+Flaw: Has no order in their life
+
+Random Fact: Disregards poorer people
+
+Keepsake: A slip of parchment with the phrase I am not dead written on it

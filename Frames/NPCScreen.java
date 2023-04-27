@@ -1,9 +1,20 @@
 package Frames;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.Document;
 import org.json.JSONObject;
+import org.jsoup.*;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -38,6 +49,7 @@ public class NPCScreen extends javax.swing.JInternalFrame {
         genNPC = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         NPCviewer = new javax.swing.JEditorPane();
+        addNPC = new javax.swing.JButton();
 
         setIconifiable(true);
         setMaximizable(true);
@@ -62,6 +74,13 @@ public class NPCScreen extends javax.swing.JInternalFrame {
 
         jScrollPane1.setViewportView(NPCviewer);
 
+        addNPC.setText("Add to notes");
+        addNPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNPCActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -69,21 +88,24 @@ public class NPCScreen extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(201, 201, 201)
-                        .addComponent(genNPC))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(78, Short.MAX_VALUE))
+                        .addComponent(genNPC, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addNPC, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(genNPC)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addNPC)
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -98,26 +120,62 @@ public class NPCScreen extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_genNPCKeyReleased
 
     private void genNPCMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genNPCMouseReleased
-        
-        try {
-            System.out.println("Making Guy!");
-            
-            JSONObject tmpNPC = NPCGenerator.generateNPC();
-            
-            
-            NPCviewer.setText(NPCGenerator.display(tmpNPC));
-        } catch (IOException ex) {
-            Logger.getLogger(NPCScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    try {
+        System.out.println("Making Guy!");
+        JSONObject tmpNPC = NPCGenerator.generateNPC();
+     
+        NPCviewer.setText(NPCGenerator.display(tmpNPC));
+    } catch (IOException ex) {
+        Logger.getLogger(NPCScreen.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
     }//GEN-LAST:event_genNPCMouseReleased
 
+    private void addNPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNPCActionPerformed
+    String npcContent = NPCviewer.getText(); // Get the contents of NPCviewer
+
+    // Extract the NPC's first and last name from the npcContent
+    String[] lines = npcContent.split("\\r?\\n");
+    String[] nameParts = lines[0].split(" ");
+    String firstName = nameParts[1];
+    String lastName = nameParts[2];
+
+    // Create the filename from the NPC's name
+    String filename = firstName + "-" + lastName;
+
+    // Replace any spaces in the filename with underscores
+    filename = filename.replaceAll("\\s+", "_");
+
+    // Create a new file object with the NPC's name as the filename
+    File npcFile = new File("src/main/java/NPC/" + filename + ".txt");
+
+    try {
+        // Write the NPC content to the file
+        FileWriter writer = new FileWriter(npcFile);
+        writer.write(npcContent);
+        writer.close();
+
+        // Show a success message
+        JOptionPane.showMessageDialog(this, "NPC saved successfully.");
+    } catch (IOException ex) {
+        Logger.getLogger(NPCScreen.class.getName()).log(Level.SEVERE, null, ex);
+
+        // Show an error message
+        JOptionPane.showMessageDialog(this, "Error saving NPC: " + ex.getMessage());
+    }
+        
+    }//GEN-LAST:event_addNPCActionPerformed
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane NPCviewer;
+    private javax.swing.JButton addNPC;
     private javax.swing.JButton genNPC;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
-}
+
     
+}
 

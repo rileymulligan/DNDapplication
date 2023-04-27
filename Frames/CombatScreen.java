@@ -1,39 +1,22 @@
 package Frames;
 
-
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
-import static java.nio.file.Files.list;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultListModel;
-import javax.swing.DropMode;
-import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.TransferHandler;
-import static javax.swing.TransferHandler.MOVE;
+import javax.swing.JTextField;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -56,7 +39,6 @@ public class CombatScreen extends javax.swing.JInternalFrame {
      */
     public CombatScreen() throws IOException {
        
-        
         initComponents();
         refresh();
 
@@ -81,15 +63,22 @@ public class CombatScreen extends javax.swing.JInternalFrame {
         damageButton = new javax.swing.JButton();
         removeButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
+        valueInput = new javax.swing.JEditorPane();
         jLabel2 = new javax.swing.JLabel();
         refreshButton = new javax.swing.JButton();
         addTempHP = new javax.swing.JButton();
         AddCustom = new javax.swing.JButton();
         AddPlayers = new javax.swing.JButton();
+        removeAllButton = new javax.swing.JButton();
+        moveUp = new javax.swing.JButton();
+        moveDown = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        changePlayers = new javax.swing.JButton();
+        addSinglePlayer = new javax.swing.JButton();
 
-        activeCombatDisplay.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        activeCombatDisplay.setDragEnabled(true);
+        activeCombatDisplay.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        activeCombatDisplay.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        activeCombatDisplay.setDropMode(javax.swing.DropMode.INSERT);
         activeCombatDisplay.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 activeCombatDisplayMouseDragged(evt);
@@ -104,12 +93,28 @@ public class CombatScreen extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(activeCombatDisplay);
+        activeCombatDisplay.getAccessibleContext().setAccessibleDescription("");
 
         jLabel1.setText("Initiative!");
 
         healButton.setText("Heal Selected");
+        healButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                healButtonMouseClicked(evt);
+            }
+        });
+        healButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                healButtonActionPerformed(evt);
+            }
+        });
 
         damageButton.setText("Damage Selected");
+        damageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                damageButtonActionPerformed(evt);
+            }
+        });
 
         removeButton.setText("Remove Selected");
         removeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -118,7 +123,7 @@ public class CombatScreen extends javax.swing.JInternalFrame {
             }
         });
 
-        jScrollPane2.setViewportView(jEditorPane1);
+        jScrollPane2.setViewportView(valueInput);
 
         jLabel2.setText("Value:");
 
@@ -130,6 +135,11 @@ public class CombatScreen extends javax.swing.JInternalFrame {
         });
 
         addTempHP.setText("Add temp HP");
+        addTempHP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTempHPActionPerformed(evt);
+            }
+        });
 
         AddCustom.setText("Add Custom");
         AddCustom.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -144,59 +154,142 @@ public class CombatScreen extends javax.swing.JInternalFrame {
                 AddPlayersMouseClicked(evt);
             }
         });
+        AddPlayers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddPlayersActionPerformed(evt);
+            }
+        });
+
+        removeAllButton.setText("Remove All");
+        removeAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeAllButtonActionPerformed(evt);
+            }
+        });
+
+        moveUp.setText("▲");
+        moveUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveUpActionPerformed(evt);
+            }
+        });
+
+        moveDown.setText("▼");
+        moveDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveDownActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Reorder Selected:");
+
+        changePlayers.setText("Change \"Players\"");
+        changePlayers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changePlayersActionPerformed(evt);
+            }
+        });
+
+        addSinglePlayer.setText("Add Player");
+        addSinglePlayer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSinglePlayerActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(AddCustom)
-                        .addGap(18, 18, 18)
-                        .addComponent(AddPlayers)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removeButton))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(damageButton)
-                            .addComponent(healButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addComponent(addTempHP))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(41, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(moveUp)
+                                    .addComponent(jLabel2)
+                                    .addComponent(moveDown))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(changePlayers, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(removeAllButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AddCustom)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addSinglePlayer)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(AddPlayers)))
+                .addContainerGap(20, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(172, 172, 172)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(removeButton)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(healButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addTempHP)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(damageButton)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreshButton)
-                    .addComponent(AddCustom)
-                    .addComponent(AddPlayers)
-                    .addComponent(removeButton))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(refreshButton)
+                            .addComponent(AddCustom)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(AddPlayers)
+                            .addComponent(addSinglePlayer))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(removeButton)
+                            .addComponent(changePlayers)
+                            .addComponent(removeAllButton)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(moveUp)
+                        .addGap(33, 33, 33)
+                        .addComponent(moveDown)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(healButton)
-                    .addComponent(addTempHP))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(damageButton))
-                .addContainerGap(97, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(healButton)
+                        .addComponent(addTempHP)
+                        .addComponent(damageButton)))
+                .addGap(77, 77, 77))
         );
 
         pack();
@@ -205,6 +298,12 @@ public class CombatScreen extends javax.swing.JInternalFrame {
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         String masterJSON_file_path = "src\\main\\Java\\InternalData\\masterJSON.json";
 String selectedValue = activeCombatDisplay.getSelectedValue();
+
+if (selectedValue == null) {
+        // Display an error dialog box if nothing is selected in activeCombatDisplay
+        JOptionPane.showMessageDialog(this, "Please select an item to remove.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         
 System.out.println(selectedValue);
 
@@ -257,11 +356,6 @@ if (matcher.find()) {
     }
     refresh();
 }
-
-    
-        
-        
-
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void refreshButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshButtonMouseClicked
@@ -283,13 +377,13 @@ if (matcher.find()) {
     // Get the player's name, HP, and Temp HP from user input
     String playerName = JOptionPane.showInputDialog("Enter the player's name:");
     int playerHP = Integer.parseInt(JOptionPane.showInputDialog("Enter the player's HP:"));
-    int playerTempHP = Integer.parseInt(JOptionPane.showInputDialog("Enter the player's Temp HP:"));
+    
 
     // Create a JSONObject for the new player
     JSONObject newPlayer = new JSONObject();
     newPlayer.put("name", playerName);
     newPlayer.put("hp", playerHP);
-    newPlayer.put("Temphp", playerTempHP);
+    newPlayer.put("Temphp", 0);
 
     // Add the new player to the JSONArray of monsters
     masterJson.put(newPlayer);
@@ -316,26 +410,511 @@ if (matcher.find()) {
     }//GEN-LAST:event_activeCombatDisplayMouseDragged
 
     private void activeCombatDisplayMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activeCombatDisplayMousePressed
+      
+    
     }//GEN-LAST:event_activeCombatDisplayMousePressed
 
     private void activeCombatDisplayMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_activeCombatDisplayMouseReleased
+       
+    
+    
     }//GEN-LAST:event_activeCombatDisplayMouseReleased
+
+    
+    private void healButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_healButtonMouseClicked
+
+    }//GEN-LAST:event_healButtonMouseClicked
+
+    private void healButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_healButtonActionPerformed
+                                      
+        int selectedValue;
+        String selectedEntity = activeCombatDisplay.getSelectedValue();
+        System.out.println("SelectedEntity:" + selectedEntity);
+        String selectedValueStr;
+        selectedValueStr = valueInput.getText();
+
+        try {
+            selectedValue = Integer.parseInt(selectedValueStr);
+        } catch (NumberFormatException e) {
+            selectedValue = 0;
+        }
+
+         System.out.println("SelectedValue:" + selectedValue);
+
+         String masterJSON_file_path = "src\\main\\Java\\InternalData\\masterJSON.json";
+
+        System.out.println(selectedValue);
+
+        // Define the regular expression pattern to match text between <b> tags
+        Pattern pattern = Pattern.compile("<html><b>(.*?)</b>");
+
+        // Use a Matcher to search for matches in the input string
+        Matcher matcher = pattern.matcher(selectedEntity);
+
+        if (matcher.find()) {
+            String selectionName = matcher.group(1);
+            System.out.println(selectionName);
+            BufferedReader reader = null;
+            try {
+                // Read the contents of the masterJSON file into a String variable
+                reader = new BufferedReader(new FileReader(masterJSON_file_path));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                String masterJSONString = stringBuilder.toString();
+                reader.close();
+                // Parse the masterJSON String into a JSONArray
+                JSONArray masterJSON = new JSONArray(masterJSONString);
+                // Find the object with the selectionName key and update its "hp" property
+                for (int i = 0; i < masterJSON.length(); i++) {
+                    JSONObject obj = masterJSON.getJSONObject(i);
+                    if (obj.getString("name").equals(selectionName)) {
+                        int hp = obj.getInt("hp");
+                        obj.put("hp", hp + selectedValue);
+                        break;
+                    }
+                }
+                // Write the modified JSONArray back to the masterJSON file
+                FileWriter writer = new FileWriter(masterJSON_file_path);
+                writer.write(masterJSON.toString());
+                writer.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            refresh();
+        }
+
+                
+    }//GEN-LAST:event_healButtonActionPerformed
+
+    private void addTempHPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTempHPActionPerformed
+                                     
+        int selectedValue;
+        String selectedEntity = activeCombatDisplay.getSelectedValue();
+        System.out.println("SelectedEntity:" + selectedEntity);
+        String selectedValueStr;
+        selectedValueStr = valueInput.getText();
+
+        try {
+            selectedValue = Integer.parseInt(selectedValueStr);
+        } catch (NumberFormatException e) {
+            selectedValue = 0;
+        }
+
+         System.out.println("SelectedValue:" + selectedValue);
+
+         String masterJSON_file_path = "src\\main\\Java\\InternalData\\masterJSON.json";
+
+        System.out.println(selectedValue);
+
+        // Define the regular expression pattern to match text between <b> tags
+        Pattern pattern = Pattern.compile("<html><b>(.*?)</b>");
+
+        // Use a Matcher to search for matches in the input string
+        Matcher matcher = pattern.matcher(selectedEntity);
+
+        if (matcher.find()) {
+            String selectionName = matcher.group(1);
+            System.out.println(selectionName);
+            BufferedReader reader = null;
+            try {
+                // Read the contents of the masterJSON file into a String variable
+                reader = new BufferedReader(new FileReader(masterJSON_file_path));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                String masterJSONString = stringBuilder.toString();
+                reader.close();
+                // Parse the masterJSON String into a JSONArray
+                JSONArray masterJSON = new JSONArray(masterJSONString);
+                // Find the object with the selectionName key and update its "hp" property
+                for (int i = 0; i < masterJSON.length(); i++) {
+                    JSONObject obj = masterJSON.getJSONObject(i);
+                    if (obj.getString("name").equals(selectionName)) {
+                        int temphp = obj.getInt("Temphp");
+                        obj.put("Temphp", temphp + selectedValue);
+                        break;
+                    }
+                }
+                // Write the modified JSONArray back to the masterJSON file
+                FileWriter writer = new FileWriter(masterJSON_file_path);
+                writer.write(masterJSON.toString());
+                writer.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            refresh();
+        }
+    }//GEN-LAST:event_addTempHPActionPerformed
+
+    private void damageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_damageButtonActionPerformed
+        int selectedValue;
+    String selectedEntity = activeCombatDisplay.getSelectedValue();
+    System.out.println("SelectedEntity:" + selectedEntity);
+    String selectedValueStr;
+    selectedValueStr = valueInput.getText();
+
+    try {
+        selectedValue = Integer.parseInt(selectedValueStr);
+    } catch (NumberFormatException e) {
+        selectedValue = 0;
+    }
+
+    System.out.println("SelectedValue:" + selectedValue);
+
+    String masterJSON_file_path = "src\\main\\Java\\InternalData\\masterJSON.json";
+
+    System.out.println(selectedValue);
+
+    // Define the regular expression pattern to match text between <b> tags
+    Pattern pattern = Pattern.compile("<html><b>(.*?)</b>");
+
+    // Use a Matcher to search for matches in the input string
+    Matcher matcher = pattern.matcher(selectedEntity);
+
+    if (matcher.find()) {
+        String selectionName = matcher.group(1);
+        System.out.println(selectionName);
+        BufferedReader reader = null;
+        try {
+            // Read the contents of the masterJSON file into a String variable
+            reader = new BufferedReader(new FileReader(masterJSON_file_path));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            String masterJSONString = stringBuilder.toString();
+            reader.close();
+            // Parse the masterJSON String into a JSONArray
+            JSONArray masterJSON = new JSONArray(masterJSONString);
+            // Find the object with the selectionName key and update its "hp" and "temphp" properties
+            for (int i = 0; i < masterJSON.length(); i++) {
+                JSONObject obj = masterJSON.getJSONObject(i);
+                if (obj.getString("name").equals(selectionName)) {
+                    int temphp = obj.getInt("Temphp");
+                    if (temphp >= selectedValue) {
+                        obj.put("Temphp", temphp - selectedValue);
+                    } else {
+                        obj.put("Temphp", 0);
+                        obj.put("hp", obj.getInt("hp") - (selectedValue - temphp));
+                    }
+                    break;
+                }
+            }
+            // Write the modified JSONArray back to the masterJSON file
+            FileWriter writer = new FileWriter(masterJSON_file_path);
+            writer.write(masterJSON.toString());
+            writer.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        refresh();
+    }
+
+    }//GEN-LAST:event_damageButtonActionPerformed
+
+    private void moveUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveUpActionPerformed
+        // Get the index of the selected item in the JList
+    int selectedIndex = activeCombatDisplay.getSelectedIndex();
+    
+    if (selectedIndex == -1) {
+        // Display an error message and return
+        JOptionPane.showMessageDialog(this, "Please select an entity to move up.", "Selection Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // Check if the selected item is not the first item in the list
+    if (selectedIndex > 0) {
+        // Swap the selected item with the item above it
+        String selectedEntity = (String) activeCombatDisplay.getSelectedValue();
+        String entityAbove = (String) activeCombatDisplay.getModel().getElementAt(selectedIndex - 1);
+        DefaultListModel model = (DefaultListModel) activeCombatDisplay.getModel();
+        model.set(selectedIndex - 1, selectedEntity);
+        model.set(selectedIndex, entityAbove);
+        activeCombatDisplay.setSelectedIndex(selectedIndex - 1);
+        
+        // Update the masterJSON file to reflect the new order
+        try {
+            // Read the JSON file into a JSONArray
+            JSONArray jsonArray = new JSONArray(Files.readString(Paths.get("src\\main\\Java\\InternalData\\masterJSON.json")));
+            
+            // Swap the selected entity with the entity above it
+            JSONObject selectedObj = jsonArray.getJSONObject(selectedIndex);
+            JSONObject entityAboveObj = jsonArray.getJSONObject(selectedIndex - 1);
+            jsonArray.put(selectedIndex - 1, selectedObj);
+            jsonArray.put(selectedIndex, entityAboveObj);
+            
+            // Write the modified JSONArray back to the JSON file
+            Files.writeString(Paths.get("src\\main\\Java\\InternalData\\masterJSON.json"), jsonArray.toString());
+        } catch (IOException | JSONException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+
+    }//GEN-LAST:event_moveUpActionPerformed
+
+    private void moveDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveDownActionPerformed
+       // Get the index of the selected item in the JList
+    int selectedIndex = activeCombatDisplay.getSelectedIndex();
+    
+    if (selectedIndex == -1) {
+        // Display an error message and return
+        JOptionPane.showMessageDialog(this, "Please select an entity to move up.", "Selection Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // Check if the selected item is not the last item in the list
+    if (selectedIndex < activeCombatDisplay.getModel().getSize() - 1) {
+        // Swap the selected item with the item below it
+        String selectedEntity = (String) activeCombatDisplay.getSelectedValue();
+        String entityBelow = (String) activeCombatDisplay.getModel().getElementAt(selectedIndex + 1);
+        DefaultListModel model = (DefaultListModel) activeCombatDisplay.getModel();
+        model.set(selectedIndex + 1, selectedEntity);
+        model.set(selectedIndex, entityBelow);
+        activeCombatDisplay.setSelectedIndex(selectedIndex + 1);
+        
+        // Update the masterJSON file to reflect the new order
+        try {
+            // Read the JSON file into a JSONArray
+            JSONArray jsonArray = new JSONArray(Files.readString(Paths.get("src\\main\\Java\\InternalData\\masterJSON.json")));
+            
+            // Swap the selected entity with the entity below it
+            JSONObject selectedObj = jsonArray.getJSONObject(selectedIndex);
+            JSONObject entityBelowObj = jsonArray.getJSONObject(selectedIndex + 1);
+            jsonArray.put(selectedIndex, entityBelowObj);
+            jsonArray.put(selectedIndex + 1, selectedObj);
+            
+            // Write the modified JSONArray back to the JSON file
+            Files.writeString(Paths.get("src\\main\\Java\\InternalData\\masterJSON.json"), jsonArray.toString());
+        } catch (IOException | JSONException ex) {
+            ex.printStackTrace();
+        }
+    }
+    }//GEN-LAST:event_moveDownActionPerformed
+
+    private void removeAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllButtonActionPerformed
+        String masterJSON_file_path = "src\\main\\Java\\InternalData\\masterJSON.json";
+    DefaultListModel model = (DefaultListModel) activeCombatDisplay.getModel();
+    
+    // Remove all entries from the JList
+    model.removeAllElements();
+    
+    // Remove all objects from the masterJSON file
+    try {
+        // Read the contents of the masterJSON file into a JSONArray
+        String masterJSONString = Files.readString(Paths.get(masterJSON_file_path));
+        JSONArray masterJSON = new JSONArray(masterJSONString);
+        masterJSON = new JSONArray(); // Set the array to an empty one
+        
+        // Write the modified JSONArray back to the masterJSON file
+        Files.writeString(Paths.get(masterJSON_file_path), masterJSON.toString());
+    } catch (IOException | JSONException ex) {
+        ex.printStackTrace();
+    }
+    
+    refresh();
+    }//GEN-LAST:event_removeAllButtonActionPerformed
+
+    private void changePlayersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePlayersActionPerformed
+    try {
+        // Read in the players JSON file
+        String playersFilePath = "src/main/Java/InternalData/players.json";
+        String playersJsonString = new String(Files.readAllBytes(Paths.get(playersFilePath)));
+        JSONArray playersJson = new JSONArray(playersJsonString);
+        
+        // Read in the master JSON file
+    String masterFilePath = "src/main/Java/InternalData/masterJSON.json";
+    String masterJsonString = new String(Files.readAllBytes(Paths.get(masterFilePath)));
+    JSONArray masterJSON = new JSONArray(masterJsonString);
+    
+        // Prompt the user to select a player to edit
+Object[] playerNames = new Object[playersJson.length()];
+for (int i = 0; i < playersJson.length(); i++) {
+    JSONObject player = playersJson.getJSONObject(i);
+    playerNames[i] = player.getString("name");
+}
+Object selectedPlayerName = JOptionPane.showInputDialog(this, "Select a player to edit:", "Edit Player", JOptionPane.PLAIN_MESSAGE, null, playerNames, null);
+if (selectedPlayerName == null) {
+    // User cancelled the dialog
+    return;
+}
+
+// Find the player to edit in the JSON array
+JSONObject selectedPlayer = null;
+for (int i = 0; i < playersJson.length(); i++) {
+    JSONObject player = playersJson.getJSONObject(i);
+    if (player.getString("name").equals(selectedPlayerName)) {
+        selectedPlayer = player;
+        break;
+    }
+}
+if (selectedPlayer == null) {
+    // This should never happen, but just in case...
+    throw new RuntimeException("Could not find selected player in JSON array");
+}
+
+// Prompt the user to edit the player's attributes
+JTextField nameField = new JTextField(selectedPlayer.getString("name"));
+JTextField hpField = new JTextField(String.valueOf(selectedPlayer.getInt("hp")));
+JTextField tempHpField = new JTextField(String.valueOf(selectedPlayer.getInt("Temphp")));
+Object[] inputFields = {"Name:", nameField, "HP:", hpField, "Temp HP:", tempHpField};
+int result = JOptionPane.showConfirmDialog(this, inputFields, "Edit Player", JOptionPane.OK_CANCEL_OPTION);
+if (result != JOptionPane.OK_OPTION) {
+    // User cancelled the dialog
+    return;
+}
+
+// Update the player's attributes in the JSON object
+selectedPlayer.put("name", nameField.getText());
+selectedPlayer.put("hp", Integer.parseInt(hpField.getText()));
+selectedPlayer.put("Temphp", Integer.parseInt(tempHpField.getText()));
+
+// Write the updated JSON data back to the players file
+FileWriter fileWriter = new FileWriter(playersFilePath);
+fileWriter.write(playersJson.toString());
+fileWriter.close();
+
+// Find the updated player in the masterJSON array and refresh its values
+for (int i = 0; i < masterJSON.length(); i++) {
+    JSONObject player = masterJSON.getJSONObject(i);
+    if (player.getString("name").equals(selectedPlayer.getString("name"))) {
+        player.put("hp", selectedPlayer.getInt("hp"));
+        player.put("Temphp", selectedPlayer.getInt("Temphp"));
+        break;
+    }
+}
+        
+        // Display a success message
+        JOptionPane.showMessageDialog(this, "Player updated successfully!", "Edit Player", JOptionPane.INFORMATION_MESSAGE);
+    } catch (IOException ex) {
+        Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (JSONException ex) {
+        Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    JOptionPane.showMessageDialog(this, "Please delete the edited player and re-add them using the 'Add Player' button", "Player Edited", JOptionPane.INFORMATION_MESSAGE);
+
+   
+    
+
+    }//GEN-LAST:event_changePlayersActionPerformed
+
+    private void AddPlayersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddPlayersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AddPlayersActionPerformed
+
+    private void addSinglePlayerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSinglePlayerActionPerformed
+        try {
+        // Read in the players JSON file
+        String playersFilePath = "src/main/Java/InternalData/players.json";
+        String playersJsonString = new String(Files.readAllBytes(Paths.get(playersFilePath)));
+        JSONArray playersJson = new JSONArray(playersJsonString);
+        
+        // Prompt the user to select a player to add
+        Object[] playerNames = new Object[playersJson.length()];
+        for (int i = 0; i < playersJson.length(); i++) {
+            JSONObject player = playersJson.getJSONObject(i);
+            playerNames[i] = player.getString("name");
+        }
+        Object selectedPlayerName = JOptionPane.showInputDialog(this, "Select a player to add to the combat:", "Add Player", JOptionPane.PLAIN_MESSAGE, null, playerNames, null);
+        if (selectedPlayerName == null) {
+            // User cancelled the dialog
+            return;
+        }
+        
+        // Find the selected player in the JSON array
+        JSONObject selectedPlayer = null;
+        for (int i = 0; i < playersJson.length(); i++) {
+            JSONObject player = playersJson.getJSONObject(i);
+            if (player.getString("name").equals(selectedPlayerName)) {
+                selectedPlayer = player;
+                break;
+            }
+        }
+        if (selectedPlayer == null) {
+            // This should never happen, but just in case...
+            throw new RuntimeException("Could not find selected player in JSON array");
+        }
+        
+        // Read in the master JSON file
+        String masterFilePath = "src/main/Java/InternalData/masterJSON.json";
+        String masterJsonString = new String(Files.readAllBytes(Paths.get(masterFilePath)));
+        JSONArray masterJson = new JSONArray(masterJsonString);
+        
+        // Add the selected player to the master JSON array
+        masterJson.put(selectedPlayer);
+        
+        // Write the updated JSON data back to the master file
+        FileWriter fileWriter = new FileWriter(masterFilePath);
+        fileWriter.write(masterJson.toString());
+        fileWriter.close();
+        
+        // Display a success message
+        JOptionPane.showMessageDialog(this, "Player added successfully!", "Add Player", JOptionPane.INFORMATION_MESSAGE);
+    } catch (IOException ex) {
+        Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (JSONException ex) {
+        Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        refresh();
+    }//GEN-LAST:event_addSinglePlayerActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddCustom;
     private javax.swing.JButton AddPlayers;
     private javax.swing.JList<String> activeCombatDisplay;
+    private javax.swing.JButton addSinglePlayer;
     private javax.swing.JButton addTempHP;
+    private javax.swing.JButton changePlayers;
     private javax.swing.JButton damageButton;
     private javax.swing.JButton healButton;
-    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton moveDown;
+    private javax.swing.JButton moveUp;
     private javax.swing.JButton refreshButton;
+    private javax.swing.JButton removeAllButton;
     private javax.swing.JButton removeButton;
+    private javax.swing.JEditorPane valueInput;
     // End of variables declaration//GEN-END:variables
 public void refresh(){
     try {
@@ -368,48 +947,50 @@ public void refresh(){
     }
 
 public void addPlayers() {
-        
-    
-    try {
+   try {
         String playersFilePath = "src/main/Java/InternalData/players.json";
         String masterFilePath = "src/main/Java/InternalData/masterJSON.json";
         String masterJsonString = new String(Files.readAllBytes(Paths.get(masterFilePath)));
         String playerJsonString = new String(Files.readAllBytes(Paths.get(playersFilePath)));
 
-    // Parse the JSON data as JSON arrays
-    JSONArray masterJson = new JSONArray(masterJsonString);
-    JSONArray playerJson = new JSONArray(playerJsonString);
+        // Parse the JSON data as JSON arrays
+        JSONArray masterJson = new JSONArray(masterJsonString);
+        JSONArray playerJson = new JSONArray(playerJsonString);
 
-    // Add all elements from playerJson to masterJson
-    for (int i = 0; i < playerJson.length(); i++) {
-        masterJson.put(playerJson.getJSONObject(i));
-    }
-
-    // Update masterJSON.json file with the new data
-    FileWriter fileWriter = new FileWriter(masterFilePath);
-    fileWriter.write(masterJson.toString());
-    fileWriter.close();
-
-    // Clear the list model
-    model.removeAllElements();
-
-    // Iterate over the updated JSON array and add each element to the list model
-    for (int i = 0; i < masterJson.length(); i++) {
-        JSONObject element = masterJson.getJSONObject(i);
-        String name = element.getString("name");
-        int hp = element.getInt("hp");
-        int temphp = element.getInt("Temphp");
-        model.addElement("<html>" + "<b>" + name + "</b>" + "<br/><b>HP</b>: " + hp + "<br/><b>Temp HP:</b> " + temphp + "<br>~~~~~~~~~~~~~~~~~</html>");
-        System.out.println(name + "Added!");
-    }
-
-    // Set the list model on the JList
-    activeCombatDisplay.setModel(model);
-    refresh();
-
-
-}       catch (IOException ex) {
-            Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
+        // Add all elements from playerJson to masterJson
+        for (int i = 0; i < playerJson.length(); i++) {
+            JSONObject playerObject = playerJson.getJSONObject(i);
+            masterJson.put(playerObject);
         }
+
+        // Update masterJSON.json file with the new data
+        FileWriter fileWriter = new FileWriter(masterFilePath);
+        fileWriter.write(masterJson.toString());
+        fileWriter.close();
+
+        // Clear the list model
+        model.removeAllElements();
+
+        // Iterate over the updated JSON array and add each element to the list model
+        for (int i = 0; i < masterJson.length(); i++) {
+            Object obj = masterJson.get(i);
+            if (obj instanceof JSONObject) {
+                JSONObject element = (JSONObject) obj;
+                String name = element.getString("name");
+                int hp = element.getInt("hp");
+                int temphp = element.getInt("Temphp");
+                model.addElement("<html>" + "<b>" + name + "</b>" + "<br/><b>HP</b>: " + hp + "<br/><b>Temp HP:</b> " + temphp + "<br>~~~~~~~~~~~~~~~~~</html>");
+                System.out.println(name + "Added!");
+            } else {
+                System.out.println("Skipping non-JSONObject element at index " + i);
+            }
+        }
+
+        // Set the list model on the JList
+        activeCombatDisplay.setModel(model);
+        refresh();
+    } catch (IOException ex) {
+        Logger.getLogger(CombatScreen.class.getName()).log(Level.SEVERE, null, ex);
     }
+}
 }

@@ -2,34 +2,21 @@ package Frames;
 
 
 import com.google.gson.Gson;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.text.EditorKit;
+import javax.swing.JTextPane;
 import javax.swing.text.html.HTMLEditorKit;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import javax.swing.JOptionPane;
 
 
 /*
@@ -41,7 +28,7 @@ import javax.swing.JOptionPane;
  *
  * @author straf
  */
-public class MonsterScreen extends javax.swing.JInternalFrame {
+public class MonsterScreen extends javax.swing.JInternalFrame implements Extendable {
 
     /**
      * Creates new form MonsterScreen
@@ -102,11 +89,11 @@ public class MonsterScreen extends javax.swing.JInternalFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         showMonster = new javax.swing.JEditorPane();
         jLabel1 = new javax.swing.JLabel();
-        addToActive = new javax.swing.JButton();
 
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setPreferredSize(new java.awt.Dimension(1580, 767));
 
         jLabel25.setText("Select a monster:");
 
@@ -221,148 +208,135 @@ public class MonsterScreen extends javax.swing.JInternalFrame {
 
         jScrollPane7.setViewportView(imageShow);
 
+        jScrollPane6.setAlignmentX(0.0F);
+        jScrollPane6.setAlignmentY(0.0F);
+
+        showMonster.setEditable(false);
+        showMonster.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 204, 204), new java.awt.Color(255, 204, 204), new java.awt.Color(255, 204, 204), new java.awt.Color(255, 204, 204)));
         showMonster.setContentType("text/html\n"); // NOI18N
+        showMonster.setAutoscrolls(false);
         jScrollPane6.setViewportView(showMonster);
 
-        jLabel1.setText("If a monster is selected...");
-
-        addToActive.setText("Add to active combat");
-        addToActive.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addToActiveMouseClicked(evt);
-            }
-        });
-        addToActive.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addToActiveActionPerformed(evt);
-            }
-        });
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setText("Filters");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel29)
-                                .addComponent(jLabel28))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(1, 1, 1)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(minSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(maxSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
+                                .addGap(23, 23, 23)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel30)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(small4)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(medium4)
-                                                .addGap(52, 52, 52)
-                                                .addComponent(gargantuan4))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel26)
-                                                .addGap(39, 39, 39)
-                                                .addComponent(search4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jLabel27)
+                                            .addComponent(jLabel26))
+                                        .addGap(31, 31, 31)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(tiny4)
-                                                .addGap(89, 89, 89)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(huge4)
-                                                    .addComponent(large4))))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(large4))
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGap(46, 46, 46)
-                                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel25)
-                                                .addGap(127, 127, 127))))))
-                            .addComponent(addToActive))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 778, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1022, 1022, 1022)
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(search4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(small4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(huge4))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(58, 58, 58)
+                                        .addComponent(jLabel1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(67, 67, 67)
+                                        .addComponent(medium4)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(gargantuan4))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel30)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel29)
+                                    .addComponent(jLabel28))
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(minSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(maxSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel25)
+                                .addGap(127, 127, 127)))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 898, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(253, 253, 253)
                 .addComponent(icon4, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 3, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel26)
+                            .addComponent(search4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(108, 108, 108)
+                                .addGap(35, 35, 35)
                                 .addComponent(jLabel27)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(large4))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(5, 5, 5)
-                                        .addComponent(tiny4)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(15, 15, 15)
-                                        .addComponent(small4)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(medium4))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(huge4)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(gargantuan4)))
-                                .addGap(44, 44, 44)
-                                .addComponent(jLabel30))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
+                                .addGap(2, 2, 2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel26)
-                                    .addComponent(search4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel25))
-                                .addGap(14, 14, 14)
-                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(15, 15, 15)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 15, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(330, 330, 330)
+                                    .addComponent(tiny4)
+                                    .addComponent(large4))))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(small4)
+                            .addComponent(huge4))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(medium4)
+                            .addComponent(gargantuan4))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel30)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel28)
-                            .addComponent(minSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel29)
-                            .addComponent(maxSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(icon4)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(84, 84, 84)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(addToActive)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(minSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jScrollPane6)))
-                .addContainerGap())
+                        .addComponent(jLabel1)
+                        .addGap(15, 15, 15)
+                        .addComponent(jLabel25)
+                        .addGap(17, 17, 17)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel29)
+                        .addComponent(maxSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(391, 391, 391)
+                .addComponent(icon4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane6)
         );
 
         pack();
@@ -412,27 +386,27 @@ public class MonsterScreen extends javax.swing.JInternalFrame {
             if (monster.getName().equals(name)) {
                 
                 String stats = "<html>" +
-                "<b>Name:</b> " + monster.getName() + "<br>" +
-                "<b>Meta:</b> " + monster.getMeta() + "<br>" +
-                "<b>CR:</b> " + monster.getChallenge() + "<br>" +
-                "<b>Armor Class:</b> " + monster.getArmorClass() + "<br>" +
-                "<b>Hit Points:</b> " + monster.getHitPoints() + "<br>" +
-                "<b>Speed:</b> " + monster.getSpeed() + "<br>" +
-                "<b>STR:</b> " + monster.getStr() + monster.getStrMod() + "<br>" +
-                "<b>DEX:</b> " + monster.getDex() + monster.getDexMod() + "<br>" +
-                "<b>CON:</b> " + monster.getCon() + monster.getConMod() + "<br>" +
-                "<b>INT:</b> " + monster.getIntStat() + monster.getIntMod() + "<br>" +
-                "<b>WIS:</b> " + monster.getWis() + monster.getWisMod() + "<br>" +
-                "<b>CHA:</b> " + monster.getCha() + monster.getChaMod() + "<br>" +
-                "<b>Saving Throws:</b> " + monster.getSavingThrows() + "<br>" +
-                "<b>Skills:</b> " + monster.getSkills() + "<br>" +
-                "<b>Damage Immunities:</b> " + monster.getDamageImmunities() + "<br>" +
-                "<b>Condition Immunities:</b> " + monster.getConditionImmunities() + "<br>" +
-                "<b>Senses:</b> " + monster.getSenses() + "<br>" +
-                "<b>Languages:</b> " + monster.getLanguages() + "<br>" +
-                "<b>Traits:</b> " + monster.getTraits() + "<br>" +
-                "<b>Actions:</b> " + monster.getActions() + "<br>" +
-                "</html>";
+        "<h1>" + monster.getName() + "</h1>" +
+        "<h3>" + monster.getMeta() + "</h3>" +
+        "<b>Challenge Rating:</b> " + monster.getChallenge() + "<br>" +
+        "<b>Armor Class:</b> " + monster.getArmorClass() + "<br>" +
+        "<b>Hit Points:</b> " + monster.getHitPoints() + "<br>" +
+        "<b>Speed:</b> " + monster.getSpeed() + "<br><br>" +
+        "<b>STR:</b> " + monster.getStr() + "  " + monster.getStrMod() + "<br>" +
+        "<b>DEX:</b> " + monster.getDex() + " " + monster.getDexMod() + "<br>" +
+        "<b>CON:</b> " + monster.getCon() + " " + monster.getConMod() + "<br>" +
+        "<b>INT:</b> " + monster.getIntStat() + " " + monster.getIntMod() + "<br>" +
+        "<b>WIS:</b> " + monster.getWis() + " " + monster.getWisMod() + "<br>" +
+        "<b>CHA:</b> " + monster.getCha() + " " + monster.getChaMod() + "<br><br>" +
+        "<b>Saving Throws:</b> " + monster.getSavingThrows() + "<br>" +
+        "<b>Skills:</b> " + monster.getSkills() + "<br>" +
+        "<b>Damage Immunities:</b> " + monster.getDamageImmunities() + "<br>" +
+        "<b>Condition Immunities:</b> " + monster.getConditionImmunities() + "<br>" +
+        "<b>Senses:</b> " + monster.getSenses() + "<br>" +
+        "<b>Languages:</b> " + monster.getLanguages() + "<br><br>" +
+        "<h2>Traits</h2>" + monster.getTraits() + "<br><br>" +
+        "<h2>Actions</h2>" + monster.getActions() + "<br>" +
+        "</html>";
                 
                
                showMonster.setText("");
@@ -485,104 +459,24 @@ public class MonsterScreen extends javax.swing.JInternalFrame {
         updateMonsterList();
     }//GEN-LAST:event_large4sizeStateChanged
 
-    private void minSpinner4challengeFilter(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_minSpinner4challengeFilter
-        updateMonsterList();
-    }//GEN-LAST:event_minSpinner4challengeFilter
-
     private void tiny4sizeStateChanged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tiny4sizeStateChanged
         updateMonsterList();
     }//GEN-LAST:event_tiny4sizeStateChanged
-
-    private void maxSpinner4challengeFilter(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maxSpinner4challengeFilter
-        updateMonsterList();
-    }//GEN-LAST:event_maxSpinner4challengeFilter
 
     private void gargantuan4sizeStateChanged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gargantuan4sizeStateChanged
         updateMonsterList();
     }//GEN-LAST:event_gargantuan4sizeStateChanged
 
-    private void addToActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToActiveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addToActiveActionPerformed
+    private void maxSpinner4challengeFilter(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maxSpinner4challengeFilter
+        updateMonsterList();
+    }//GEN-LAST:event_maxSpinner4challengeFilter
 
-    private void addToActiveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addToActiveMouseClicked
-        
-        System.out.println("BAM");
-String name = jList5.getSelectedValue();
-String monsters_json_file_path = "src\\main\\Java\\InternalData\\monsters.json";
-String masterJSON_file_path = "src\\main\\Java\\InternalData\\masterJSON.json";
-// Read the monsters JSON file
-String monstersJsonString = null;
-try {
-    monstersJsonString = new String(Files.readAllBytes(Paths.get(monsters_json_file_path)));
-} catch (IOException ex) {
-    Logger.getLogger(MonsterScreen.class.getName()).log(Level.SEVERE, null, ex);
-}
-
-// Check if the JSON string is an array
-if (!monstersJsonString.trim().startsWith("[")) {
-    System.err.println("Error: the monsters JSON file does not contain a valid JSON array.");
-    return;
-}
-
-JSONArray monstersJson = new JSONArray(monstersJsonString);
-
-// Get the selected monster from the JSON file
-JSONObject selectedMonster = null;
-for (int i = 0; i < monstersJson.length(); i++) {
-    JSONObject monster = monstersJson.getJSONObject(i);
-    if (monster.getString("name").equals(name)) {
-        selectedMonster = monster;
-        break;
-    }
-}
-
-// Prompt the user to add a unique name for the monster
-String monsterName;
-do {
-    monsterName = JOptionPane.showInputDialog("Enter a unique name for the monster:");
-} while (monsterName == null || monsterName.isEmpty());
-
-// Ask the user for the monster's HP
-int monsterHP = Integer.parseInt(JOptionPane.showInputDialog("Enter the monster's HP:"));
-
-
-
-// Create a JSON object for the new monster and add it to the master JSON file
-String masterJsonString = null;
-try {
-    masterJsonString = new String(Files.readAllBytes(Paths.get(masterJSON_file_path)));
-} catch (IOException ex) {
-    Logger.getLogger(MonsterScreen.class.getName()).log(Level.SEVERE, null, ex);
-}
-
-// Check if the JSON string is an array
-if (!masterJsonString.trim().startsWith("[")) {
-    System.err.println("Error: the master JSON file does not contain a valid JSON array.");
-    return;
-}
-
-JSONArray masterJson = new JSONArray(masterJsonString);
-JSONObject newMonster = new JSONObject();
-newMonster.put("name", monsterName);
-newMonster.put("hp", monsterHP);
-newMonster.put("Temphp", 0);
-
-masterJson.put(newMonster);
-try {
-    Files.write(Paths.get(masterJSON_file_path), masterJson.toString().getBytes());
-} catch (IOException ex) {
-    Logger.getLogger(MonsterScreen.class.getName()).log(Level.SEVERE, null, ex);
-}
-
-// Print a confirmation message
-System.out.println("Added " + monsterName + " with " + monsterHP + " HP to the master JSON file.");
-
-    }//GEN-LAST:event_addToActiveMouseClicked
+    private void minSpinner4challengeFilter(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_minSpinner4challengeFilter
+        updateMonsterList();
+    }//GEN-LAST:event_minSpinner4challengeFilter
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addToActive;
     private javax.swing.JToggleButton gargantuan4;
     private javax.swing.JToggleButton huge4;
     private javax.swing.JLabel icon4;

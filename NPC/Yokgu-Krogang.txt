@@ -1,0 +1,23 @@
+Name: Yokgu Krogang
+Gender: Female
+Race: Orc
+
+Physical Traits:
+- has close set eyes
+- a long nose
+
+Mannerisms:
+- Speaks very slowly
+- Mush mouth
+
+Demeanor: Gracious
+
+Ideal: Responsibility
+
+Bond: Do unto others as you would have done to you
+
+Flaw: Withdrawn
+
+Random Fact: Stretches the truth to tell a good story
+
+Keepsake: A leather pouch that contains a single wooden token depicting a crab
