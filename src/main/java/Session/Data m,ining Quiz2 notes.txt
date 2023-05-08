@@ -1,0 +1,112 @@
+CLI
+pwd - Prints the full name (the full path) of current/working directory
+ls - List directory contents
+ls -a - List all the content, including hidden files
+ls -l - List the content and its information
+mkdir foldername – Create a new directory foldername
+cd foldername – Change the working directory to foldername
+cd - Return to $HOME directory
+cd .. - Go up a directory
+cd - - Return to the previous directory
+cp source destination – Copy source to destination
+cp -r source destination – Copy a directory recursively from source to destination
+mv source destination - Move (or rename) a file from source to destination
+rm file1 - Remove file1
+rm -r folder - Remove a directory and its contents recursively
+cat file – Print contents of file on the screen
+less file - View and paginate file
+head file - Show first 10 lines of file
+tail file - Show last 10 lines of file
+Git init - turns a directory into an empty Git repository
+Git add - Adds files in the to the staging area for Git.
+Git commit - Record the changes made to the files to a local repository (-m “message”)
+Git status - git status will return the current working branch. If a file is in the staging area, but not committed, it shows with git status. Or, if there are no changes it’ll return nothing to commit, working directory clean.
+Git config - git config is how to assign these settings. Two important settings are user user.name and user.email
+Python
+
+courseCredits = {'CSC160': 4, 'CSC161': 4, 'CSC260': 3, 'CSC261': 3}
+for course, credits in courseCredits.items():
+    print(f'{course}: {credits}')
+—------------------------------------------------------
+add = lambda x,y: x + y
+print(add(1, 3))
+—-----------------------------------------------------
+courses = ['CSC160', 'CSC161', 'CSC260', 'CSC261']
+credits = [4, 4, 3, 3]
+# With a loop.
+courseCredits = {}
+for course, credit in zip(courses, credits):
+    courseCredits[course] = credit
+print(courseCredits)
+# With a dictionary comprehension. 
+courseCredits = {course:credit for course, credit in zip(courses, credits)}
+print(courseCredits)
+—------------------------------------------------------
+databases
+To create a new database: CREATE DATABASE database_name;
+To create a new table: CREATE TABLE table_name (column_1 datatype, column_2 datatype, ...);
+To insert data into a table: INSERT INTO table_name (column_1, column_2, ...) VALUES (value_1, value_2, ...);
+To select all data from a table: SELECT * FROM table_name;
+To select specific columns from a table: SELECT column_1, column_2, ... FROM table_name;
+To filter data based on a condition: SELECT * FROM table_name WHERE column_name > threshold_value;
+To sort data in ascending order: SELECT * FROM table_name ORDER BY column_name ASC;
+To join two tables: SELECT * FROM table1 INNER JOIN table2 ON table1.column_name = table2.column_name;
+To update data in a table: UPDATE table_name SET column_name = new_value WHERE column_name = old_value;
+—----------------------------------------------------------------------------------------
+import sqlite3
+connection = sqlite3.connect("Chinook_Sqlite.sqlite")
+cursor = connection.cursor()
+# Step 3, execute SQL statement(s).
+cursor.execute("select * from Album limit 10")
+# -- for select statements, do something with the results using
+#   * cursor.fetchone() -- get the first result
+#   * cursor.fetchmany(n) -- get a list of the first n results
+#   * cursor.fetchall() -- get a list of all the results
+cursor.fetchall()
+—-------------------------------
+cursor.execute("select Artist.Name, Album.Title, Album.AlbumId, count(*) as TrackCount  \
+    from Track join Album  \
+        on Track.AlbumId = Album.AlbumId \
+    join Artist \
+        on Album.ArtistId = Artist.ArtistId \
+    group by Album.AlbumId \
+    order by TrackCount desc")
+results = cursor.fetchmany(10)
+web scraping
+import requests
+response = requests.get('URL)
+from bs4 import BeautifulSoup
+# We'll continue using `currentSession` from before.
+response = currentSession.get('url', timeout=2)
+content = response.text
+soup = BeautifulSoup(content, "html.parser")
+soup.find_all("a", attrs={'name': 'SophomoreCredits32'})
+import re # For regular expressions (e.g., pattern and partial text matching).
+soup.find_all(string=re.compile('Sophomore'))
+soup.find_all(string=re.compile('Sophomore'))[0].parent.parent.find_all(string=re.compile('CSC'))
+—--------
+def getBirthday(person):
+    # Get the person's wikipedia page
+    response = requests.get(f'https://en.wikipedia.org/wiki/{person}', timeout=2)
+    if response.status_code == requests.codes.ALL_OK:
+        soup = BeautifulSoup(response.text, "html.parser")
+        return soup.find('span', class_='bday').text
+        # extract their birthday
+        # return their birthday
+Pandas
+To read data from a CSV file: import pandas as pd; data = pd.read_csv("file_name.csv")
+To display the first few rows of data: data.head()
+To display the last few rows of data: data.tail()
+To select a column of data: data["column_name"]
+To select multiple columns of data: data[["column_1", "column_2"]]
+To filter data based on a condition: filtered_data = data[data["column_name"] > threshold_value]
+To group data by a column: grouped_data = data.groupby("column_name").mean()
+To join two dataframes: merged_data = pd.merge(df1, df2, on="column_name")
+To calculate summary statistics: data.describe()
+To fill missing values with a specific value: data.fillna(value)
+mouseDF.to_csv('mousew2.csv')
+df = pd.read_csv('mousew.csv')
+len(mouseDF) - how many rows
+len(mouseDF.columns)
+mouseDF['weight'].describe() - describe a column
+mouseDF[(mouseDF['sex'] == 'M') & (mouseDF['weight'] < 22)
