@@ -4,9 +4,9 @@
 To build: 
 cd into where the folder that contains both the src file and pom.xml
 
-'''
+```
 mvn clean package
-'''
+```
 to run:
 
 
@@ -15,8 +15,8 @@ double click the executable jar
 
 or
 
-'''
+```
 cd into the target folder
 java -jar dndapp-1.0-jar-with-dependencies.jar
-'''
+```
 
