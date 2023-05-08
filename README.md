@@ -7,8 +7,9 @@ cd into where the folder that contains both the src file and pom.xml
 mvn clean package
 '''
 to run:
+'''
 
-EITHER:
+#EITHER:
 double click the executable jar
 
 or
