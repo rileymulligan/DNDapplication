@@ -9,7 +9,7 @@ mvn clean package
 to run:
 '''
 
-#EITHER:
+# EITHER:
 double click the executable jar
 
 or
