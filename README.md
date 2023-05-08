@@ -20,3 +20,11 @@ cd into the target folder
 java -jar dndapp-1.0-jar-with-dependencies.jar
 ```
 
+Libraries included:
+gson-2.8
+json-simple-1.1.1
+jsoup-1.15.4
+
+Api used:
+https://www.dnd5eapi.co/
+
